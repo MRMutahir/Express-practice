@@ -1,42 +1,20 @@
-console.log('SALAM');
-// import { obj1 } from "./api1";
-import  Express  from "express";
-const app = Express()
-// const obj1 = require('./api1')
-// console.log("apis");
-let obj = [
-    {
-        name:'Muhammad Talha',
-        class:'Mern stack',
-        batch:10,
-    },
-    {
-        name:'Muhammad Mutahir',
-        class:'Mern stack',
-        batch:10,
-    } ,{
-        name:'Muhammad Eshareeb',
-        class:'Mern stack',
-        batch:10,
-    } ,{
-        name:'Muhammad Taha',
-        class:'Mern stack',
-        batch:10,
-    }
-]
-
-app.get('/home',(req,res)=>{
-    res.send(obj[0])
-    res.send('home')
-    
+import fs from "fs";
+import express from 'express'
+let read = fs.readFileSync('./MOCK_DATA.json','utf-8');
+// console.log(read);
+let app = express();
+app.get('/api/users',(req,res)=>{
+    res.json(read);
 });
-app.get('/about',(req,res)=>{
-    res.send(obj[1])
-    res.send('{name:mutahir}')
+app.get('/users',(req,res)=>{
+    let html = `<ul><li>${read}</li></ul>`
+    res.send(html)
+})
+app.get('/api/users/:id',(req,res)=>{
+    let id = req.params.id * 1
+    let getid = read.find(user => user.id === id)
+    return res.json(getid)
 })
 app.listen(8000,()=>{
-    console.log('server run !');
-})
-app.post('/home',(req,res)=>{
-    res.send(obj)
+    console.log('Ok');
 })
